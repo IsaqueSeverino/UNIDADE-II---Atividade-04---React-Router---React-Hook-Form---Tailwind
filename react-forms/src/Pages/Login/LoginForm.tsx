@@ -1,5 +1,5 @@
 import './LoginForm.css'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from "react-hook-form";
 
@@ -16,32 +16,29 @@ const defaultValues: Partial<LoginFormData> = savedData ? JSON.parse(savedData) 
 
 export default function LoginForm() {
 
-    const { register, handleSubmit, reset, watch, formState: { errors } } = useForm<LoginFormData>({
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<LoginFormData>({
         defaultValues
     });
 
     const [loginError, setLoginError] = useState("");
     const navigate = useNavigate();
 
-    const formValues = watch();
-    useEffect(() => {
-        localStorage.setItem("loginFormData", JSON.stringify(formValues));
-    }, [formValues]);
-
     const onSubmit = (data: LoginFormData) => {
        
         const userDataRaw = localStorage.getItem("registerFormData");
+
         if (!userDataRaw) {
             setLoginError("Usuário não cadastrado!");
             return;
         }
+        
         const userData = JSON.parse(userDataRaw);
 
         if (data.email === userData.email && data.senha === userData.senha) {
             setLoginError("");
             localStorage.removeItem("loginFormData");
             reset();
-            navigate("/register");
+            navigate("/home");
         } else {
             setLoginError("Email ou senha incorretos.");
         }
@@ -64,9 +61,9 @@ export default function LoginForm() {
                                 type="text"
                                 placeholder="exemplo@mail.com"
                                 className="h-10 text-sm bg-white border-b border-gray-300  outline-blue-700 font-poppins"
-                                {...register("email")}
+                                {...register("email", { required: "E-mail obrigatório" })}
                             />
-                            {errors.email && <span className="text-xs text-red-600">{errors.email.message}</span>}
+                            {errors.email && <span className="text-xs text-red-600 mt-2">{errors.email.message}</span>}
                         </div>
 
                         <div className='flex flex-col'>
@@ -75,15 +72,15 @@ export default function LoginForm() {
                                 type="password"
                                 placeholder="Digite sua senha"
                                 className="h-10 text-sm bg-white border-b border-gray-300  outline-blue-700 font-poppins"
-                                {...register("senha")}
+                                {...register("senha", { required: "Senha obrigatória" })}
                                 
                             />
-                            {errors.senha && <span className="text-xs text-red-600">{errors.senha.message}</span>}            
+                            {errors.senha && <span className="text-xs text-red-600 mt-2">{errors.senha.message}</span>}            
                         </div>
 
                         <button
                             type="submit"
-                            className="h-13 bg-black rounded-md text-white font-semibold text-base px-3 cursor-pointer transition-filter duration-200 hover:brightness-90 border-none"
+                            className="h-13 bg-black rounded-md text-white  font-semibold text-base px-3 cursor-pointer transition-filter duration-200 hover:brightness-90 border-none"
                         >
                             Entrar
                         </button>

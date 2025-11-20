@@ -1,7 +1,6 @@
 import './RegisterForm.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from "react-hook-form";
-import { useEffect } from 'react';
 
 import src from '../../Assets/NavHeader.svg'
 import background from '../../Assets/Login_Background.jpg'
@@ -17,18 +16,13 @@ const defaultValues = savedData ? JSON.parse(savedData) : {};
 
 export default function RegisterForm() {
 
-    const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<RegisterFormData>({ defaultValues });
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<RegisterFormData>({ defaultValues });
 
-    const formValues = watch();
     const navigate = useNavigate();
-
-    useEffect(() => {
-        localStorage.setItem("registerFormData", JSON.stringify(formValues));
-    }, [formValues]);
 
     const onSubmit = (data: RegisterFormData) => {
         console.log(data);
-        localStorage.removeItem("registerFormData");
+        localStorage.setItem("registerFormData", JSON.stringify(data));
         reset();
         navigate("/login");
     };
@@ -52,7 +46,7 @@ export default function RegisterForm() {
                                 className="h-10 text-sm bg-white border-b border-gray-300  outline-blue-700 font-poppins"
                                 {...register("nome", { required: "Nome obrigatório" })}
                             />
-                            {errors.nome && <p>{errors.nome.message}</p>}
+                            {errors.nome && <p className='text-xs text-red-600 mt-2'>{errors.nome.message}</p>}
                         </div>
 
                         <div className='flex flex-col'>
@@ -63,7 +57,7 @@ export default function RegisterForm() {
                                 className="h-10 text-sm bg-white border-b border-gray-300  outline-blue-700 font-poppins"
                                 {...register("email", { required: "E-mail obrigatório" })}
                             />
-                            {errors.email && <p>{errors.email.message}</p>}
+                            {errors.email && <p className='text-xs text-red-600 mt-2'>{errors.email.message}</p>}
                         </div>
 
                         <div className='flex flex-col mb-3'>
@@ -74,7 +68,7 @@ export default function RegisterForm() {
                                 className="h-10 text-sm bg-white border-b border-gray-300  outline-blue-700 font-poppins"
                                 {...register("senha", { required: "Senha obrigatória", minLength: { value: 6, message: "Mínimo 6 dígitos" } })}
                             />
-                            {errors.senha && <p className="text-xs text-gray-400 mt-2">{errors.senha.message}</p>}
+                            {errors.senha && <p className="text-xs text-red-600 mt-2">{errors.senha.message}</p>}
                         </div>
 
                             <button
