@@ -28,7 +28,7 @@ export default function RegisterForm() {
     };
 
     return (
-        <div className="w-full h-screen flex justify-end font-poppins" style={{ backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="register-container w-full h-screen flex justify-end font-poppins" style={{ backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
 
             <div className='w-2/4 h-auto flex flex-col mt-3 bg-white items-center justify-center font-poppins border-t-2 border-l-2 rounded-tl-3xl'>
                 <img className='mb-8' src={src} alt="Navigation Header" />
